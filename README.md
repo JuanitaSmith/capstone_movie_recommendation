@@ -45,12 +45,10 @@ to bring together everything I learned in the course:
 * [10. Licensing, Authors, Acknowledgements<a name="licensing"></a>](#10-licensing-authors-acknowledgementsa-namelicensinga)
 * [11. References](#11-references)
 
-<a id='projectdefinition'></a>
-<h1 style="color:white; font-size:35px; text-align: left; line-height: 1; font-family: Calibri; background-color:#7C9E9E; border-radius:10px; padding: 14px">1. Project Definition</h1>
 
+# 1. Project Definition
 
-<a id='assess_imdb'></a>
-<span style="color:#7C9E9E; font-size:30px; font-weight:bolder">Project Overview</span>
+## Project Overview
 
 Build a movie recommendation web application by
 using a blend of recommendation techniques such as ranked-based, content-based,
@@ -100,7 +98,7 @@ then explore and test various movie recommendation techniques.
 
 Different metrics are used for different recommendation algorithms:
 
-### Ranked-Based Metrics
+#### Ranked-Based Metrics
 
   IMDB is often seen as the industry standard when it comes to movies;
   therefore, both 'IMDB number of votes' and 'IMDB average rating'
@@ -114,7 +112,7 @@ Different metrics are used for different recommendation algorithms:
 **Top movies using IMDB number of votes:**
 ![img.png](images/metrics_ranked_votes.png)
 
-### User-based Collaborative Filtering Metrics
+#### User-based Collaborative Filtering Metrics
 
 Collaborative filtering focuses on neighborhood similarities,
 meaning we look for similar users to the main user
@@ -128,7 +126,7 @@ based on the angle between their rating vectors,
 focusing on directional alignment rather than magnitude, 
 making it robust to differences in scale and suitable for high-dimensional data. 
 
-### NLP Content-Based Metrics:
+#### NLP Content-Based Metrics:
 
 Another method we can use to make recommendations is
 to recommend movies with the highest text-based cosine similarity 
@@ -174,7 +172,7 @@ python runmovieapp.py
 
 A blend of various data sources from IMDB, TMDB, and MovieLens were used.
 
-### 2.1 Kaggle TMDB/IMDb dataset containing content for over 1 million movies. 
+#### 2.1 Kaggle TMDB/IMDb dataset containing content for over 1 million movies. 
    
 See full documentation available
    [here](https://www.kaggle.com/datasets/alanvourch/tmdb-movies-daily-updates/data)
@@ -201,7 +199,7 @@ of which the following columns were selected for the project:
 * production_companies: Main production companies
 
 
-### 2.2) MovieLens 32M
+#### 2.2) MovieLens 32M
    
 See documentation available [here](https://grouplens.org/datasets/movielens/32m/) or [here](https://files.grouplens.org/datasets/movielens/ml-32m.zip)
 
@@ -214,7 +212,7 @@ Collected 10/2023 Released 05/2024
 The zip file contains several datasets,
 of which the following are used in this project:
 
-#### 2.2.1 links.csv
+##### 2.2.1 links.csv
 
 This dataset enable us to join data from TMDB, IMDB and MovieLens together.
 In this project imdbId are used as the main unique identifier.
@@ -223,7 +221,7 @@ In this project imdbId are used as the main unique identifier.
 * tmdb_id: TMDB ID
 * imdbId: IMDb ID
 
-#### 2.2.2. ratings.csv
+##### 2.2.2. ratings.csv
 
 This dataset contains movie ratings.
 
@@ -232,9 +230,9 @@ This dataset contains movie ratings.
 * rating: MovieLens ratings on scale 0-5
 * timestamp: Date rating was giving
 
-#### 2.2.3 tags.csv
+##### 2.2.3 tags.csv
 
-This datasset contains tags users gave to movies,
+This dataset contains tags users gave to movies,
 example 'disney', 'family', etc.
 
 Columns used:
@@ -244,7 +242,7 @@ movielens_id: MovieLens ID
 tag: tag text
 timestamp: date the movie was tagged
 
-### 2.3 Kaggle Extra IMDb data
+#### 2.3 Kaggle Extra IMDb data
 
 Dataset has similar data as IMDB/TMDB dataset,
 but with additional interesting columns.
