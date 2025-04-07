@@ -1,0 +1,169 @@
+{% extends 'index.html' %}
+
+{% block recommendations %}
+
+<!--<div class="container">-->
+
+<!--    <h4 class="text-center">Recommendations for User Id {{inputUserId}}</h4>-->
+
+<!--    <div class="row">-->
+
+<!--        <div class="mt-2 col-md-6 mx-auto text-centre">-->
+<!--            <div class="input-group">-->
+<!--                <span class="input-group-append">-->
+<!--                <button class="btn btn-secondary" type="submit">-->
+<!--                    <i class="bi bi-search"></i>-->
+<!--                </button>-->
+<!--                </span>-->
+<!--                <input class="form-control" type="search" placeholder="Search for documents" id="example-search-input">-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="container">-->
+<!--<form style="width: 50%; margin: 0 auto; text-align: center;" action="/recommender" method="POST">-->
+<div class="row mt-2 align-items-center">
+    <div class="col-3"></div>
+    <!--    <div class="col-3">-->
+    <!--        <h4>Recommendations for User Id {{inputUserId}}</h4>-->
+    <!--    </div>-->
+    <!--    <div class="col-1">-->
+    <!--    </div>-->
+    <div class="col-5">
+        <form action="/recommender" method="POST">
+            <div class="input-group center">
+
+                <span class="input-group-append">
+                <button class="btn btn-secondary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+                </span>
+                <input class="form-control"
+                       type="search"
+                       placeholder="Search for documents"
+                       id="search_input"
+                       name="search_input">
+
+                <input class="form-control"
+                       type="hidden"
+                       name="inputUserId"
+                       value={{inputUserId}}
+                       id="inputUserId">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!--recommendation comment to see if collaborative,
+ranked or content was triggered-->
+<p class="text-center mt-3 mb-3">{{recommender_comment}}</p>
+
+{% if keywords|length > 0 %}
+<p class="text-center small">Your interests: {{keywords}}</p>
+{% endif %}
+
+
+<!--    recommendation cards-->
+<!--<div class="album py-5 bg-body-tertiary">-->
+<!--    <div class="container">-->
+
+<!--        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">-->
+
+<!--            {% for movie in movies.values() %}-->
+
+<!--            <div class="col">-->
+<!--                <div class="card shadow-sm" style="height: 25rem; width: 25rem">-->
+<!--&lt;!&ndash;                    <h5 class="card-header">&ndash;&gt;-->
+<!--&lt;!&ndash;                        {{movie['title']}}&ndash;&gt;-->
+<!--&lt;!&ndash;                    </h5>&ndash;&gt;-->
+<!--                    <img src={{movie['poster_path']}} class="card-img-top w-50 h-75" alt="...">-->
+<!--                    <div class="card-body" style="overflow-y: auto; overflow-x:hidden;">-->
+<!--                        <p class="card-text small">{{movie['overview']}}.</p>-->
+<!--                    </div>-->
+<!--                    <div class="card-footer">-->
+<!--                        <div class="d-flex justify-content-between align-items-center">-->
+<!--                            <form action="/view" method="POST">-->
+<!--                                <button type="submit"-->
+<!--                                        class="btn_add btn-sm btn-outline-secondary"-->
+<!--                                        name="view_button"-->
+<!--                                        value={{movie['imdbId']}}>View</button>-->
+<!--                            </form>-->
+<!--                            <small class="text-body-secondary">{{movie['imdb_votes']}} ratings</small>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            {% endfor %}-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="album py-4 bg-body-tertiary g-1">
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-2">
+
+            {% for movie in movies.values() %}
+
+                <div class="card mb-3">
+                  <div class="row g-0 h-100">
+                    <div class="col-md-7">
+                      <img src={{movie['poster_path']}}
+                           class="img-fluid rounded-start object-fit-fill"
+                           alt="poster_path">
+                    </div>
+                    <div class="col-md-5">
+                      <div class="card-body" style="overflow-y: auto;
+                      overflow-x:hidden;">
+                        <p class="card-text small text-break">{{movie['tagline']}}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="card-footer">
+                            <div class="d-flex flex-column, justify-content-between align-items-center">
+                                <form action="/view" method="POST">
+                                    <button type="submit"
+                                            class="btn_add btn-xs btn-outline-secondary"
+                                            name="view_button"
+                                            value={{movie['imdbId']}}>View</button>
+
+<!--                                   <a role="button"-->
+<!--                                            class="btn btn_add btn-xs btn-outline-secondary"-->
+<!--                                            name="view_button"-->
+<!--                                            href={{movie['homepage']}}-->
+<!--                                            value={{movie['homepage']}}>View</a>-->
+                                </form>
+                                <i class="bi bi-star-fill ms-sm-auto" style="color:goldenrod"></i>
+                                <small class="text-body-secondary p-1">
+                                    {{movie['imdb_rating']}}
+                                    ({{movie['imdb_votes']}} reviews)</small>
+                            </div>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+<!--footer section-->
+<footer>
+        <script type="text/javascript">
+            var movies = {{movies | safe}};
+            var inputUserId = {{inputUserId}};
+            var recommender_comment = {{recommendation_comment | safe}};
+            var nav_texts = {{nav_texts | safe}};
+            var test = movies['imdb_rating'].toFixed(1).toString();
+        </script>
+</footer>
+
+{% endblock %}

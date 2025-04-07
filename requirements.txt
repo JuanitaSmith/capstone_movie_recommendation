@@ -1,0 +1,16 @@
+pandas
+numpy
+matplotlib
+seaborn
+scipy
+scikit-learn
+jupyter
+notebook
+nb_conda_kernels
+statsmodels
+nltk
+flask
+kagglehub
+kaggle
+pyarrow
+fastparquet
