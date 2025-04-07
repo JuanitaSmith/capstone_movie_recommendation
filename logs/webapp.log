@@ -55,3 +55,65 @@
 2025-04-07 12:02:58 INFO     127.0.0.1 - - [07/Apr/2025 12:02:58] "[36mGET /static/img/movie-reel.png HTTP/1.1[0m" 304 -
 2025-04-07 12:02:58 INFO     127.0.0.1 - - [07/Apr/2025 12:02:58] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
 2025-04-07 12:02:58 INFO     127.0.0.1 - - [07/Apr/2025 12:02:58] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:32:27 INFO     [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.85:3001
+2025-04-07 12:32:27 INFO     [33mPress CTRL+C to quit[0m
+2025-04-07 12:32:27 INFO      * Restarting with stat
+2025-04-07 12:32:28 WARNING   * Debugger is active!
+2025-04-07 12:32:28 INFO      * Debugger PIN: 118-968-067
+2025-04-07 12:32:34 INFO     Loading initial data on first run
+2025-04-07 12:32:34 INFO     Loading data/clean/imdb_tmdb.parquet...
+2025-04-07 12:32:34 INFO     Loading data/clean/ratings.parquet.gzip...
+2025-04-07 12:32:34 INFO     Loading data/clean/tags.parquet...
+2025-04-07 12:32:35 INFO     Movie contents loaded with shape (46745, 17)
+2025-04-07 12:32:35 INFO     User ratings loaded with shape (12097065, 4)
+2025-04-07 12:32:35 INFO     Movie Tags loaded with shape (46745, 1)
+2025-04-07 12:32:35 INFO     Loading tfidf vectorizer...
+2025-04-07 12:32:35 INFO     Loading user item matrix
+2025-04-07 12:32:36 INFO     127.0.0.1 - - [07/Apr/2025 12:32:36] "GET / HTTP/1.1" 200 -
+2025-04-07 12:32:36 INFO     127.0.0.1 - - [07/Apr/2025 12:32:36] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-04-07 12:32:36 INFO     127.0.0.1 - - [07/Apr/2025 12:32:36] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:32:36 INFO     127.0.0.1 - - [07/Apr/2025 12:32:36] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:33:33 INFO     127.0.0.1 - - [07/Apr/2025 12:33:33] "GET / HTTP/1.1" 200 -
+2025-04-07 12:33:33 INFO     127.0.0.1 - - [07/Apr/2025 12:33:33] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:33:33 INFO     127.0.0.1 - - [07/Apr/2025 12:33:33] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:33:33 INFO     127.0.0.1 - - [07/Apr/2025 12:33:33] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-04-07 12:33:33 INFO     127.0.0.1 - - [07/Apr/2025 12:33:33] "[36mGET /static/img/movie-reel.png HTTP/1.1[0m" 304 -
+2025-04-07 12:33:59 INFO     127.0.0.1 - - [07/Apr/2025 12:33:59] "GET / HTTP/1.1" 200 -
+2025-04-07 12:33:59 INFO     127.0.0.1 - - [07/Apr/2025 12:33:59] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-04-07 12:33:59 INFO     127.0.0.1 - - [07/Apr/2025 12:33:59] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:33:59 INFO     127.0.0.1 - - [07/Apr/2025 12:33:59] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:20 INFO     127.0.0.1 - - [07/Apr/2025 12:34:20] "GET / HTTP/1.1" 200 -
+2025-04-07 12:34:20 INFO     127.0.0.1 - - [07/Apr/2025 12:34:20] "GET /static/img/movie-reel.png HTTP/1.1" 200 -
+2025-04-07 12:34:20 INFO     127.0.0.1 - - [07/Apr/2025 12:34:20] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:20 INFO     127.0.0.1 - - [07/Apr/2025 12:34:20] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:22 INFO     127.0.0.1 - - [07/Apr/2025 12:34:22] "GET / HTTP/1.1" 200 -
+2025-04-07 12:34:22 INFO     127.0.0.1 - - [07/Apr/2025 12:34:22] "[36mGET /static/img/movie-reel.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:22 INFO     127.0.0.1 - - [07/Apr/2025 12:34:22] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:22 INFO     127.0.0.1 - - [07/Apr/2025 12:34:22] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:23 INFO     User id received is None
+2025-04-07 12:34:23 INFO     Search text received is None
+2025-04-07 12:34:23 INFO     No Interactions for user None exists
+2025-04-07 12:34:23 INFO     Ranked-based recommendation was triggered
+2025-04-07 12:34:23 INFO     127.0.0.1 - - [07/Apr/2025 12:34:23] "POST /recommender HTTP/1.1" 200 -
+2025-04-07 12:34:23 INFO     127.0.0.1 - - [07/Apr/2025 12:34:23] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:23 INFO     127.0.0.1 - - [07/Apr/2025 12:34:23] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:23 INFO     127.0.0.1 - - [07/Apr/2025 12:34:23] "[36mGET /static/img/movie-reel.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:28 INFO     User id received is None
+2025-04-07 12:34:28 INFO     Search text received is None
+2025-04-07 12:34:28 INFO     No Interactions for user None exists
+2025-04-07 12:34:28 INFO     Ranked-based recommendation was triggered
+2025-04-07 12:34:28 INFO     127.0.0.1 - - [07/Apr/2025 12:34:28] "POST /recommender HTTP/1.1" 200 -
+2025-04-07 12:34:28 INFO     127.0.0.1 - - [07/Apr/2025 12:34:28] "[36mGET /static/img/movie-reel.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:28 INFO     127.0.0.1 - - [07/Apr/2025 12:34:28] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -
+2025-04-07 12:34:28 INFO     127.0.0.1 - - [07/Apr/2025 12:34:28] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 17:26:44 INFO     User id received is None
+2025-04-07 17:26:44 INFO     Search text received is None
+2025-04-07 17:26:44 INFO     No Interactions for user None exists
+2025-04-07 17:26:44 INFO     Ranked-based recommendation was triggered
+2025-04-07 17:26:44 INFO     127.0.0.1 - - [07/Apr/2025 17:26:44] "POST /recommender HTTP/1.1" 200 -
+2025-04-07 17:26:44 INFO     127.0.0.1 - - [07/Apr/2025 17:26:44] "[36mGET /static/img/movie-reel.png HTTP/1.1[0m" 304 -
+2025-04-07 17:26:44 INFO     127.0.0.1 - - [07/Apr/2025 17:26:44] "[36mGET /static/img/linkedinlogo.png HTTP/1.1[0m" 304 -
+2025-04-07 17:26:44 INFO     127.0.0.1 - - [07/Apr/2025 17:26:44] "[36mGET /static/img/githublogo.png HTTP/1.1[0m" 304 -

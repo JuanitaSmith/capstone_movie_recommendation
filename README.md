@@ -1,15 +1,29 @@
 ## Udacity Data Science Nanodegree
 ---
-## Capstone Project: Use LLM to improve recommendation engines
+## Capstone Project: Movie Recommendation Web Application
 
 
 #### Created by: Juanita Smith
-#### Last date: March 2025
+#### Last date: April 2025
 ---
 
-Starbucks wants to uplift their sales by sending out promotions more selectively to only those customers that are more likely to purchase the product.
-Who responds better to promotions?
-How can we identify the target market better?
+This project was completed as part of the 
+[Data Science Nanodegree](https://www.udacity.com/enrollment/nd025) with Udacity.
+
+This Nanodegree mainly focused on effective communication with stakeholders,
+building good coding practices for data scientists, 
+and building recommendation systems.
+
+I wanted my final capstone project
+to bring together everything I learned in the course:
+
+- **Software Engineering**: Use object-oriented programming 
+  to build my own packages and using them in a web application
+- **Data Engineering**: Building ETL and NLP pipelines 
+  to gather, clean, and transform data
+- **Recommendations systems**:
+  Building a movie recommendation webapp using ranked-based,
+  user-based collaborative filtering and NLP content-based algorithms.
 
 ### Table of contents
 
@@ -31,93 +45,120 @@ How can we identify the target market better?
 * [10. Licensing, Authors, Acknowledgements<a name="licensing"></a>](#10-licensing-authors-acknowledgementsa-namelicensinga)
 * [11. References](#11-references)
 
+<a id='projectdefinition'></a>
+<h1 style="color:white; font-size:35px; text-align: left; line-height: 1; font-family: Calibri; background-color:#7C9E9E; border-radius:10px; padding: 14px">1. Project Definition</h1>
 
-# 1. Project Definition
 
-## Project Overview
+<a id='assess_imdb'></a>
+<span style="color:#7C9E9E; font-size:30px; font-weight:bolder">Project Overview</span>
 
-This project was completed as part of the [Data Science Nanodegree](https://www.udacity.com/enrollment/nd025) with Udacity.
+Build a movie recommendation web application by
+using a blend of recommendation techniques such as ranked-based, content-based,
+and collaborative filtering to make personalized movie recommendations to users.
 
-As I really enjoyed the recommendations part of this course,
-this capstone project will produce a more advanced movie recommender web app,
-than what we practiced in class lessons.
+Datasets containing over one million movies from TMDB and IMDB were sourced from Kaggle 
+and blended with rating and tag data from MovieLens.
 
-To connect with my business partners,
-focussing on meaningful communication is as important
-to showing technical capability.
-
-Datasets containing over one million movies from TMDB/IMDB were sourced from Kaggle,
-and blended with rating data from MovieLens.
-
-As all popular movie platforms like Netflix is user/customer focused,
+As all popular movie platforms like Netflix are customer-focused,
 where an account is needed to watch movies,
-and recommendations are personalized to the user,
-I will build the web app in the same way to be customer-focused.
+and recommendations are personalized to the customer,
+I will build the web application in the same spirit to be user-focussed.
 
-
-Content-based movie recommender to explore the value of LLM's.
-Recommend movies with plots similar to those that a user has rated highly.
-
-Information Retrieval:
-Return a movie title based on an input plot description
-
-Text Classification:
-Predict movie genre based on plot description
-
-
-Group similar documents
+**Summary of the project approach:**
+<img src="images/webapp_design.png" alt="Web application design">
 
 ## Problem Statement
 
-During the Udacity data science lessons,
-older NLT processing techniques were used from the NLTK library.
+Build a movie recommendation web application
+that accurately predicts movies a user is likely to enjoy,
+based on their past viewing history and rating patterns.
 
-Sentences were broken up into words,
-and similarity or classification solutions were built by word matching without any schematic meaning or relationships between words or sentences.
+Recommending the right movie to the right user
+is a crucial skill to learn to ensure a positive user experience
+that helps companies like Netflix retain their customers.
 
-It relied on exact keyword-based searches.
 
-Does not understand context,
-and does not consider
-the same word can have different usages and different contexts.
+Building an accurate recommendation system brings the following challenges:
 
-As the world of AI is currently exploding with the introduction of LLMs,
-I want to explore the value of using LLM when doing movie recommendations
-and if evaluate if this will improve the quality of movie recommendations.
+- Which data sources to use?
+- Scalability: How to balance large data size vs web app performance?
+- How to handle data sparsity?
+- How to handle cold start problems for new users or 
+  users with limited viewing history?
+- How to measure success?
 
-No Semantic Information: 
-Count Vectorizer only captures word counts, not the meaning or context. 
-For instance, words like “cat” and “kitten” would have different vectors, even though they are closely related.
-Counting word frequencies.
-TF-IDF - introduce weights to represent the frequency of words in a document, such as TFIDF
+The project is divided into the following parts:
+
+- Part 1—Preparation phase:
+Use notebooks to first collect, clean and explore data,
+then explore and test various movie recommendation techniques.
+
+- Part 2: Build ETL and NLP pipelines for automated data wrangling
+- Part 3: Transfer recommendation code from notebook to a recommender class and develop the web application
 
 ## Metrics
 
-RMSE
+Different metrics are used for different recommendation algorithms:
 
-Qualitative ?
+### Ranked-Based Metrics
 
+  IMDB is often seen as the industry standard when it comes to movies;
+  therefore, both 'IMDB number of votes' and 'IMDB average rating'
+  were considered
+  good choices to identify the top 20 most liked movies.
+  
+  Upon analysis, IMDB number of votes gave the best results,
+  as it returned recognizable top movies known to me,
+  with an average IMDB rating > 7.5.
 
+**Top movies using IMDB number of votes:**
+![img.png](images/metrics_ranked_votes.png)
+
+### User-based Collaborative Filtering Metrics
+
+Collaborative filtering focuses on neighborhood similarities,
+meaning we look for similar users to the main user
+and recommend movies the main user has not watched yet,
+but his closest neighbors have.
+
+Cosine similarity is used to find similar users. 
+
+Cosine similarity measures the similarity between users 
+based on the angle between their rating vectors, 
+focusing on directional alignment rather than magnitude, 
+making it robust to differences in scale and suitable for high-dimensional data. 
+
+### NLP Content-Based Metrics:
+
+Another method we can use to make recommendations is
+to recommend movies with the highest text-based cosine similarity 
+to an input search term, using tfidf vectorization.
+
+Cosine similarity measures the angle between two vectors.
+The angle between similar vectors are close together.
+
+Cosine similarity focus on the direction of vectors,
+instead of magnitude,
+making it useful for comparing text
+that might have different lengths.
+
+<img src="images/cosine_similarity.png" alt="Cosine similarity" width="400">
 
 # 2. Installation
-To clone the repository. use `git clone https://github.com/JuanitaSmith/disaster_recovery_pipelines.git`
+To clone the repository use `git clone https://github.com/JuanitaSmith/capstone_movie_recommendation.git`
 
 - Project environment was built using Anaconda.
 - Python 3.10 interpreter was used.
-- Refer to `requirements.txt` for libraries and versions needed to build your environment.
-- Use below commands to rebuild the environment automatically
-  - `conda install -r requirements.txt` or 
-  - `pip install -r requirements.txt` or 
-  - `conda install -c conda-forge --yes --file requirements.txt`
-- Refer to `environment.yaml` for environment setup and conda channels used
-- Note: Library `iterative-stratification` was installed using pip
+- Refer to `requirements.txt` for explicit libraries and versions needed to build your environment.
+- Refer to `environment.yaml` for the full environment setup and channels used
+- Note: Library `kaggle` and `kaggle-hub` was installed using pip as it's not available in conda
 
 
 # 4. Instructions
 Run the following commands in the project's **root directory** to set up your database and model.
 
 A configuration file `src/config.pg` contains defaults for the project structure and file paths. 
-Ideally do not change this structure.
+Ideally don’t change this structure.
 
 **IMPORTANT**: MAKE SURE ALL COMMANDS ARE RUN FROM THE TERMINAL IN THE MAIN PROJECT ROOT
 
@@ -127,70 +168,101 @@ python -m src.preprocessing_nlp
 python -m unittest tests.test_recommender
 python runmovieapp.py  
 
+# 2. Analysis
 
-# 6. Input File Descriptions
+## Data Exploration
 
-2 Datasets:
+A blend of various data sources from IMDB, TMDB, and MovieLens were used.
 
-1) Kaggle 48,000+ movies dataset downloaded [here](https://www.kaggle.com/datasets/yashgupta24/48000-movies-dataset)
+### 2.1 Kaggle TMDB/IMDb dataset containing content for over 1 million movies. 
+   
+See full documentation available
+   [here](https://www.kaggle.com/datasets/alanvourch/tmdb-movies-daily-updates/data)
 
-This dataset contains the information of 48k+ movies.
-which is perfect for content recommendations.
-The schema of the dataset:
+This dataset is refreshed daily 
+and contains up-to-date data to release year 2025.
+It contains of 28 columns,
+of which the following columns were selected for the project:
 
-* Title
-* Poster Link
-* Genre
-* Actors
-* Director
-* Description
-* Date Published
-* keyword
-* Rating Count
-* Best Rating
-* Worst Rating
-* Rating Value
-* Review Date
-* Review Author
-* Review Body
-
-2) Wikipedia Movie PLots, available on kaggle can be downloaded from [here](https://www.kaggle.com/datasets/jrobischon/wikipedia-movie-plots)
-
-Plot descriptions for ~35,000 movies
-
-The dataset contains descriptions of 34,886 movies from around the world. Column descriptions are listed below:
-
-* Release Year - Year in which the movie was released
-* Title - Movie title
-* Origin/Ethnicity - Origin of movie (i.e. American, Bollywood, Tamil, etc.)
-* Director - Director(s)
-* Plot - Main actor and actresses
-* Genre - Movie Genre(s)
-* Wiki Page - URL of the Wikipedia page from which the plot description was scraped
-* Plot - Long form description of movie plot (WARNING: May contain spoilers!!!)
-
-3) MovieLens 32M —
-   downloaded [here](https://grouplens.org/datasets/movielens/32m/) or [here](https://grouplens.org/datasets/movielens/32m/)
-MovieLens 32M movie ratings. 
-Stable benchmark dataset. 
-32 million ratings and two million tag applications applied to 87,585 movies by 200,948 users. Collected 10/2023 Released 05/2024
+* title: Movie title (localized)
+* overview: text overview of the movie
+* status: Release status
+* imdb_id: IMDB ID
+* original language: ISO 639-1 language code
+* overview: Short movie synopsis
+* tagline: short captivating phrase for posters and trailers
+* imdb_rating: IMDb average rating on scale 0–10
+* imdb_votes: IMDb number of votes received
+* poster_path: URL link to poster image
+* release_date: Theatrical release date
+* genres: List of Genres
+* director: Movie director(s)
+* producers: Movie producers
+* production_companies: Main production companies
 
 
-4) imdbd - IMDB & TMDB Movie Metadata Big Dataset (>1M) https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m
+### 2.2) MovieLens 32M
+   
+See documentation available [here](https://grouplens.org/datasets/movielens/32m/) or [here](https://files.grouplens.org/datasets/movielens/ml-32m.zip)
 
-5) wiki dataset 2 https://www.kaggle.com/datasets/kartikeychauhan/movie-plots
+IMDb dataset doesn't have any ratings data by user id, 
+which we need for user-item collaborative filtering.
 
-6) wiki dataset 3 https://www.kaggle.com/datasets/exactful/wikipedia-movies?select=2020s-movies.csv
+The dataset contains 32 million ratings and two million tag applications applied to 87,585 movies by 200,948 users.
+Collected 10/2023 Released 05/2024
 
-https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m/data
+The zip file contains several datasets,
+of which the following are used in this project:
 
+#### 2.2.1 links.csv
 
-7) imdb ratings and plots for 1500 movies
-https://www.kaggle.com/datasets/rmisra/imdb-spoiler-dataset/code
+This dataset enable us to join data from TMDB, IMDB and MovieLens together.
+In this project imdbId are used as the main unique identifier.
 
- 8) later for llm poc https://www.kaggle.com/code/francispimentel/imdb-spoiler-detection-exploratory-data-analysis
+* movielens_id: MovieLens ID
+* tmdb_id: TMDB ID
+* imdbId: IMDb ID
 
-9 IMDB https://www.kaggle.com/datasets/alanvourch/tmdb-movies-daily-updates/data
+#### 2.2.2. ratings.csv
+
+This dataset contains movie ratings.
+
+* user_id: user ID who gave the rating 
+* movielens_id: MovieLens ID
+* rating: MovieLens ratings on scale 0-5
+* timestamp: Date rating was giving
+
+#### 2.2.3 tags.csv
+
+This datasset contains tags users gave to movies,
+example 'disney', 'family', etc.
+
+Columns used:
+
+user_id: user ID that tagged the movie
+movielens_id: MovieLens ID
+tag: tag text
+timestamp: date the movie was tagged
+
+### 2.3 Kaggle Extra IMDb data
+
+Dataset has similar data as IMDB/TMDB dataset,
+but with additional interesting columns.
+This dataset is not kept up to date,
+therefore, it wasn’t chosen as the main source.
+
+Full documentation is available in Kaggler [here'](https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m)
+
+Columns used in the project:
+
+* imdb_id: IMDb ID
+* backdrop_path: image used for poster backdrops
+* homepage: Movie homepage URL
+* Star1: Name of main actor
+* Star2: Name of main actor
+* Star3: Name of main actor
+* Star4: Name of main actor
+
 
 # 7. Modelling
 
