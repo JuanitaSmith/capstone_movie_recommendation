@@ -2,23 +2,25 @@
 ---
 ## Capstone Project: Movie Recommendation Web Application
 
-
 #### Created by: Juanita Smith
 #### Last date: April 2025
+
+<img src="images/webapp_ranked.png" width=600>
+
 ---
 
 This project was completed as part of the 
 [Data Science Nanodegree](https://www.udacity.com/enrollment/nd025) with Udacity.
 
-This Nanodegree mainly focused on effective communication with stakeholders,
+This nanodegree mainly focused on effective communication with stakeholders,
 building good coding practices for data scientists, 
 and building recommendation systems.
 
-I wanted my final capstone project
-to bring together everything I learned in the course:
+My final capstone project brings together key concepts I learned in this course:
 
+- Follow CRISP-DM Process (Cross Industry Process for Data Mining)
 - **Software Engineering**: Use object-oriented programming 
-  to build my own packages and using them in a web application
+  to build my own classes and packages and using them in a web application
 - **Data Engineering**: Building ETL and NLP pipelines 
   to gather, clean, and transform data
 - **Recommendations systems**:
@@ -62,6 +64,16 @@ where an account is needed to watch movies,
 and recommendations are personalized to the customer,
 I will build the web application in the same spirit to be user-focussed.
 
+Overview of the main steps of this project, following the CRISP-DM process:
+(Cross Industry Process for Data Mining)
+
+1) Business understanding: Design the scope and flow of the web application, which questions it should answer?
+2) Data Understanding: Explore data sources available to answer the questions.
+3) Data Preparation: Gather, wrangle, and analyze the data to prepare it for modeling. 
+4) Data modeling: Design and refine recommendation algorithms.
+5) Result evaluation: How well do we recommend movies to users?
+6) Deployment: Communicate business insights through a web application
+
 **Summary of the project approach:**
 <img src="images/webapp_design.png" alt="Web application design">
 
@@ -74,7 +86,6 @@ based on their past viewing history and rating patterns.
 Recommending the right movie to the right user
 is a crucial skill to learn to ensure a positive user experience
 that helps companies like Netflix retain their customers.
-
 
 Building an accurate recommendation system brings the following challenges:
 
@@ -179,7 +190,7 @@ See full documentation available
 
 This dataset is refreshed daily 
 and contains up-to-date data to release year 2025.
-It contains of 28 columns,
+It contains 28 columns,
 of which the following columns were selected for the project:
 
 * title: Movie title (localized)
@@ -214,7 +225,7 @@ of which the following are used in this project:
 
 ##### 2.2.1 links.csv
 
-This dataset enable us to join data from TMDB, IMDB and MovieLens together.
+This dataset enables us to join data from TMDB, IMDB and MovieLens together.
 In this project imdbId are used as the main unique identifier.
 
 * movielens_id: MovieLens ID
@@ -237,10 +248,10 @@ example 'disney', 'family', etc.
 
 Columns used:
 
-user_id: user ID that tagged the movie
-movielens_id: MovieLens ID
-tag: tag text
-timestamp: date the movie was tagged
+* user_id: user ID that tagged the movie
+* movielens_id: MovieLens ID
+* tag: tag text
+* timestamp: date the movie was tagged
 
 #### 2.3 Kaggle Extra IMDb data
 
@@ -261,6 +272,27 @@ Columns used in the project:
 * Star3: Name of main actor
 * Star4: Name of main actor
 
+
+## Exploratory Visualization
+
+As the recommendation project is user-focused,
+we need to find a way to evaluate the quality of the movie recommendations. 
+
+Let's profile a user based on the genres they like most.
+
+Drama, Comedy, and Thrillers seem to be the most popular genres.
+<img src="images/genre_ranked.png" alt="Genre Ranking Image" width="800">
+
+Here we have two users that have totally different tastes in movies,
+and should get totally different recommendations from our system.
+<img src="images/opposites_attract.png" width=800>
+
+Interestingly, the popularity of Comedy, Drama,
+and Romance movies are showing an upwards growth,
+whilst Action, Adventure, and Science Fiction movies are showing little growth.
+<img src="images/genre_trends.png" width=800>
+
+# 3. Methodology
 
 # 7. Modelling
 
@@ -346,16 +378,6 @@ All positive classes will be highlighted in green.
 
 <img src="disasterapp/static/assets/website_output.png" alt="website_output"/>
 
-
-# 9. Classification with OpenAI
-
-Using OpenAI embeddings during classification modeling is showing excellent results during training, 
-with a high micro precision of 0.86, 
-but poor results for imbalanced labels on the left of the graph with macro precision very low at 0.55.
-
-Surprisingly, `CountVectorizer` and `TfidfTransformer` seems to be winner !!!???
-
-<img src="disasterapp/static/assets/openai_comparison.png" alt="openai"/>
 
 
 

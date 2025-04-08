@@ -50,6 +50,9 @@ def recommender():
     except Exception as e:
         inputUserId = 0
 
+    if inputUserId == None:
+        inputUserId = 'New'
+
     print('User id received is {}'.format(inputUserId))
     r.logger.info('User id received is {}'.format(inputUserId))
 
