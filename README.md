@@ -324,7 +324,8 @@ the cosine values will range from -1 to 1.
 
 ---
 
-Ranked-based recommendations are used for new users correctly returned the expected top 20 movies
+Ranked-based recommendations
+that are used for new users, correctly returned the expected top 20 movies
 described above in the metrics section.
 
 <img src="images/webapp_rank.png" alt="Web application design" width=1000>
@@ -363,8 +364,8 @@ fantasy, superhero, thrillers.
 When using search terms like 'batman'
 or 'animal-themed superhero', similar movies in context are recommended.
 
-<img src="images/webapp_content_batman.png" width=600>
-<img src="images/webapp_content_animal.png" width=600>
+<img src="images/webapp_content_batman.png" width=1000>
+<img src="images/webapp_content_animal.png" width=1000>
 
 ## 4.2 Justification
 
@@ -430,10 +431,10 @@ The main steps of this project are, following the CRISP-DM process:
 1) Business understanding: Design the scope and flow of the web application.
 2) Data Understanding: Explore data sources available to build the required recommendations.
    
-First in notebooks: `/notebooks`
-3) Data Preparation: Gather, wrangle, and analyze the data to prepare it for modeling. 
-4) Data modeling: Design and refine recommendation algorithms.
-5) Evaluate the results: How well do we recommend movies to users?
+First in notebooks: `/notebooks` <br>
+3) Data Preparation: Gather, wrangle, and analyze the data to prepare it for modeling. <br>
+4) Data modeling: Design and refine recommendation algorithms. <br>
+5) Evaluate the results: How well do we recommend movies to users? <br>
 
 Transfer notebook code to packages and classes: `/src`
 6) Build pipelines to gather, clean, prepare, and test data
@@ -561,7 +562,8 @@ A log file `logs\webapp.log` will be track all user activities on this site
 
 # 8. Web Application Overview
 
-Start by entering a user id and click 'Find Recommendations'
+Start by entering a user id and click 'Find Recommendations'.
+<br>
 To simulate a new user, enter user id = '0'.
 
 <img src="images/webapp_user0.png" alt="Web Application Overview - User 0" width=600>
