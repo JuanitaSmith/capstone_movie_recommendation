@@ -5,7 +5,7 @@
 #### Created by: Juanita Smith
 #### Last date: April 2025
 
-<img src="images/webapp_ranked.png" width=600>
+<img src="images/webapp_ranked.png" width=800>
 
 ---
 
@@ -18,7 +18,7 @@ and building recommendation systems.
 
 My final capstone project brings together key concepts I learned in this course:
 
-- Follow CRISP-DM Process (Cross Industry Process for Data Mining)
+- Follow the **CRISP-DM** Process (Cross Industry Process for Data Mining)
 - **Software Engineering**: Use object-oriented programming 
   to build my own classes and packages and using them in a web application
 - **Data Engineering**: Building ETL and NLP pipelines 
@@ -64,18 +64,6 @@ where an account is needed to watch movies,
 and recommendations are personalized to the customer,
 I will build the web application in the same spirit to be user-focussed.
 
-Overview of the main steps of this project, following the CRISP-DM process:
-(Cross Industry Process for Data Mining)
-
-1) Business understanding: Design the scope and flow of the web application, which questions it should answer?
-2) Data Understanding: Explore data sources available to answer the questions.
-3) Data Preparation: Gather, wrangle, and analyze the data to prepare it for modeling. 
-4) Data modeling: Design and refine recommendation algorithms.
-5) Result evaluation: How well do we recommend movies to users?
-6) Deployment: Communicate business insights through a web application
-
-**Summary of the project approach:**
-<img src="images/webapp_design.png" alt="Web application design">
 
 ## Problem Statement
 
@@ -87,23 +75,18 @@ Recommending the right movie to the right user
 is a crucial skill to learn to ensure a positive user experience
 that helps companies like Netflix retain their customers.
 
-Building an accurate recommendation system brings the following challenges:
-
-- Which data sources to use?
-- Scalability: How to balance large data size vs web app performance?
-- How to handle data sparsity?
-- How to handle cold start problems for new users or 
-  users with limited viewing history?
-- How to measure success?
-
 The project is divided into the following parts:
 
-- Part 1—Preparation phase:
+- Part 1 — Preparation Phase:
+The CRISP-DM process is followed in two preparation notebooks
+  to help to refine the project in incrementatal steps.
+  
 Use notebooks to first collect, clean and explore data,
 then explore and test various movie recommendation techniques.
 
-- Part 2: Build ETL and NLP pipelines for automated data wrangling
-- Part 3: Transfer recommendation code from notebook to a recommender class and develop the web application
+- Part 2 — Deployment phase: Build ETL pipelines and web application
+- Build ETL and NLP pipelines for automated data wrangling
+- Transfer recommendation code from notebook to a recommender class and develop the web application
 
 ## Metrics
 
@@ -153,64 +136,42 @@ that might have different lengths.
 
 <img src="images/cosine_similarity.png" alt="Cosine similarity" width="400">
 
-# 2. Installation
-To clone the repository use `git clone https://github.com/JuanitaSmith/capstone_movie_recommendation.git`
 
-- Project environment was built using Anaconda.
-- Python 3.10 interpreter was used.
-- Refer to `requirements.txt` for explicit libraries and versions needed to build your environment.
-- Refer to `environment.yaml` for the full environment setup and channels used
-- Note: Library `kaggle` and `kaggle-hub` was installed using pip as it's not available in conda
-
-
-# 4. Instructions
-Run the following commands in the project's **root directory** to set up your database and model.
-
-A configuration file `src/config.pg` contains defaults for the project structure and file paths. 
-Ideally don’t change this structure.
-
-**IMPORTANT**: MAKE SURE ALL COMMANDS ARE RUN FROM THE TERMINAL IN THE MAIN PROJECT ROOT
-
-python -m src.preprocessing_data_gathering
-python -m src.preprocessing_data_cleaning
-python -m src.preprocessing_nlp
-python -m unittest tests.test_recommender
-python runmovieapp.py  
 
 # 2. Analysis
 
-## Data Exploration
+## 2.1 Data Exploration
 
 A blend of various data sources from IMDB, TMDB, and MovieLens were used.
+See below a summary of datasets and columns used in the project.
 
-#### 2.1 Kaggle TMDB/IMDb dataset containing content for over 1 million movies. 
+<img src="images/datasets_raw.png">
+
+#### a) Kaggle TMDB/IMDb dataset containing content for over 1 million movies.
+
+---
    
 See full documentation available
    [here](https://www.kaggle.com/datasets/alanvourch/tmdb-movies-daily-updates/data)
 
 This dataset is refreshed daily 
 and contains up-to-date data to release year 2025.
-It contains 28 columns,
-of which the following columns were selected for the project:
+It contains comprehensive data with 28 columns.
 
-* title: Movie title (localized)
-* overview: text overview of the movie
-* status: Release status
-* imdb_id: IMDB ID
-* original language: ISO 639-1 language code
-* overview: Short movie synopsis
-* tagline: short captivating phrase for posters and trailers
-* imdb_rating: IMDb average rating on scale 0–10
-* imdb_votes: IMDb number of votes received
-* poster_path: URL link to poster image
-* release_date: Theatrical release date
-* genres: List of Genres
-* director: Movie director(s)
-* producers: Movie producers
-* production_companies: Main production companies
+#### b) Kaggle Extra IMDb data
 
+---
 
-#### 2.2) MovieLens 32M
+Dataset has similar data as IMDB/TMDB dataset,
+but with additional interesting columns.
+This dataset is not kept up to date,
+therefore, it wasn’t chosen as the main source.
+
+Full documentation is available in Kaggler [here'](https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m)
+
+#### c) MovieLens 32M
+
+---
    
 See documentation available [here](https://grouplens.org/datasets/movielens/32m/) or [here](https://files.grouplens.org/datasets/movielens/ml-32m.zip)
 
@@ -223,57 +184,25 @@ Collected 10/2023 Released 05/2024
 The zip file contains several datasets,
 of which the following are used in this project:
 
-##### 2.2.1 links.csv
-
+##### c.1) links.csv
 This dataset enables us to join data from TMDB, IMDB and MovieLens together.
 In this project imdbId are used as the main unique identifier.
 
-* movielens_id: MovieLens ID
-* tmdb_id: TMDB ID
-* imdbId: IMDb ID
 
-##### 2.2.2. ratings.csv
+##### c.2) ratings.csv
+This dataset contains movie ratings by user and movie
 
-This dataset contains movie ratings.
-
-* user_id: user ID who gave the rating 
-* movielens_id: MovieLens ID
-* rating: MovieLens ratings on scale 0-5
-* timestamp: Date rating was giving
-
-##### 2.2.3 tags.csv
-
+##### c.3) tags.csv
 This dataset contains tags users gave to movies,
 example 'disney', 'family', etc.
 
-Columns used:
-
-* user_id: user ID that tagged the movie
-* movielens_id: MovieLens ID
-* tag: tag text
-* timestamp: date the movie was tagged
-
-#### 2.3 Kaggle Extra IMDb data
-
-Dataset has similar data as IMDB/TMDB dataset,
-but with additional interesting columns.
-This dataset is not kept up to date,
-therefore, it wasn’t chosen as the main source.
-
-Full documentation is available in Kaggler [here'](https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m)
-
-Columns used in the project:
-
-* imdb_id: IMDb ID
-* backdrop_path: image used for poster backdrops
-* homepage: Movie homepage URL
-* Star1: Name of main actor
-* Star2: Name of main actor
-* Star3: Name of main actor
-* Star4: Name of main actor
 
 
-## Exploratory Visualization
+
+
+
+
+## 2.2 Data Visualization
 
 As the recommendation project is user-focused,
 we need to find a way to evaluate the quality of the movie recommendations. 
@@ -281,36 +210,91 @@ we need to find a way to evaluate the quality of the movie recommendations.
 Let's profile a user based on the genres they like most.
 
 Drama, Comedy, and Thrillers seem to be the most popular genres.
+<br>
 <img src="images/genre_ranked.png" alt="Genre Ranking Image" width="800">
 
-Here we have two users that have totally different tastes in movies,
+Here we have two users that have opposite tastes in movies 
 and should get totally different recommendations from our system.
 <img src="images/opposites_attract.png" width=800>
 
-Interestingly, the popularity of Comedy, Drama,
-and Romance movies are showing an upwards growth,
-whilst Action, Adventure, and Science Fiction movies are showing little growth.
-<img src="images/genre_trends.png" width=800>
 
 # 3. Methodology
 
+
+
+## 3.1 Data Preprocessing
+
+
+
+
+## 3.2 Implementation
+
+- Which data sources to use?
+- Scalability: How to balance large data size vs web app performance?
+- How to handle data sparsity?
+- How to handle cold start problems for new users or 
+  users with limited viewing history?
+- How to measure success?
+
+**Summary of the project approach:**<br>
+<img src="images/webapp_design.png" alt="Web application design" width=1000>
+
+
+## 3.3 Refinement
+
+
+
+
+
+# 4. Results
+
+
+
+## 4.1 Model Evaluation and Validation
+
+
+<img src="images/collaborative_romance.png" width=1000>
+
+
+
+<img src="images/collaborative_action.png" width=1000>
+
+
+## 4.2 Justification
+
+
+
+# 5. Conclusion
+
+
+
+## 5.1 Reflection
+
+
+
+## 5.2 Improvement
+
+Content-based filtering is using a bag-of-words concept
+that doesn’t understand contextual meaning 
+but simply matches words from the input search to the movie corpus.
+
+Feeling inspired by this
+[medium blog post](https://medium.com/data-science/recreating-andrej-karpathys-weekend-project-a-movie-search-engine-9b270d7a92e4),
+experiment with LLM
+to explore
+if building recommendations
+using a model like those from OpenAI or Hugging Face
+that understand contextual meaning between words and sentences
+and make better recommendations.
+
+
 # 7. Modelling
+
 
 ## Data cleaning
 
-Preparation notebook is stored in `notebooks/ETL Pipeline Preparation.ipynb`
 
 
-
-The following data cleaning was completed:
-- category 'child_alone' was dropped as it had all entries 'False', giving us no ability to learn
-- clean categories so each category appear in its own column with binary indicator 1 or 0
-- merge categories and messages datasets using 'id' as key to join
-- id was set as a unique index, which is especially needed for language translation during OpenAI
-- duplicated messages and indexes were dropped
-- column 'original' was dropped as it's unnecessary for the model
-- category `related` had 376 records that contained a non-binary value of '2', 
-which was changed to '0' as no other categories contained true labels for such records.
 
 
 ## Modelling approach
@@ -369,6 +353,33 @@ Great performance on imbalanced labels.
 <img src="disasterapp/static/assets/final_model_performance.png" alt="model_output"/>
 
 
+
+# 2. Installation
+To clone the repository use `git clone https://github.com/JuanitaSmith/capstone_movie_recommendation.git`
+
+- Project environment was built using Anaconda.
+- Python 3.10 interpreter was used.
+- Refer to `requirements.txt` for explicit libraries and versions needed to build your environment.
+- Refer to `environment.yaml` for the full environment setup and channels used
+- Note: Library `kaggle` and `kaggle-hub` was installed using pip as it's not available in conda
+
+
+# 4. Instructions
+Run the following commands in the project's **root directory** to set up your database and model.
+
+A configuration file `src/config.pg` contains defaults for the project structure and file paths. 
+Ideally don’t change this structure.
+
+**IMPORTANT**: MAKE SURE ALL COMMANDS ARE RUN FROM THE TERMINAL IN THE MAIN PROJECT ROOT
+
+python -m src.preprocessing_data_gathering
+python -m src.preprocessing_data_cleaning
+python -m src.preprocessing_nlp
+python -m unittest tests.test_recommender
+python runmovieapp.py  
+
+
+
 # 8. Flask Web App
 
 User can input a message, select the genre and click on the button 'Classify Message'.
@@ -405,4 +416,4 @@ Must give credit to Appen for the data.
 [Kaggle movies dataset](https://www.kaggle.com/datasets/yashgupta24/48000-movies-dataset/data)
 [Wikipedia Movie PLots dataset](https://www.kaggle.com/datasets/jrobischon/wikipedia-movie-plots)
 [Building a movie recommender with OpenAI embeddings](https://medium.com/towards-data-science/recreating-andrej-karpathys-weekend-project-a-movie-search-engine-9b270d7a92e4)
-https://www.kaggle.com/datasets/kartikeychauhan/movie-plots
+[Movie Plots from Wikipedia](https://www.kaggle.com/datasets/kartikeychauhan/movie-plots)
