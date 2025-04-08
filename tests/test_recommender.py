@@ -27,8 +27,8 @@ class TestRecommender(unittest.TestCase):
                          'Interaction dataset should have 4 columns')
 
         self.assertEqual(self.r.df_movies.shape[1],
-                         17,
-                         'Content dataset should have 16 columns')
+                         11,
+                         'Content dataset should have 11 columns')
 
         self.assertEqual(self.r.df_tags.shape[1],
                          1,

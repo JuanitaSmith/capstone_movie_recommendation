@@ -484,10 +484,9 @@ def main():
 
     # save data
     cols_to_keep = ['imdbId', 'title', 'overview', 'tagline', 'imdb_rating',
-                    'imdb_votes', 'popularity', 'poster_path', 'release_year',
-                    'last_rating_timestamp', 'genres', 'vote_average',
-                    'homepage', 'star1', 'star2', 'star3', 'star4',
-                    'backdrop_path']
+                    'imdb_votes', 'poster_path', 'release_year',
+                    'last_rating_timestamp', 'genres',
+                    'homepage', 'backdrop_path']
     save_data(
         df=df_movies_clean,
         path=args.path_imdb_clean,

@@ -700,8 +700,12 @@ class Recommender:
             self.logger.info('Saving model to path {}'.format(path_tfidf))
             dump(self.tfidf_vectorizer, open(path_tfidf, 'wb'))
 
-            print('Saving matrix to path {}'.format(path_tfidf_df))
-            self.logger.info('Saving matrix to path {}'.format(path_tfidf_df))
+            print('Saving matrix to path {}'.format(
+                path_tfidf_df))
+            self.logger.info('Saving matrix to path {}'.format(
+                path_tfidf_df))
+            self.logger.info('TFIDF_DF shape: {}'.format(
+                self.tfidf_df.shape))
             self.tfidf_df.to_parquet(path_tfidf_df)
 
     def load_tfidf_vectorizer(self):

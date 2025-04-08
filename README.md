@@ -79,7 +79,7 @@ The project is divided into the following parts:
 
 - Part 1 — Preparation Phase:
 The CRISP-DM process is followed in two preparation notebooks
-  to help to refine the project in incrementatal steps.
+  to help to refine the project in incremental steps.
   
 Use notebooks to first collect, clean and explore data,
 then explore and test various movie recommendation techniques.
@@ -142,12 +142,15 @@ that might have different lengths.
 
 ## 2.1 Data Exploration
 
-A blend of various data sources from IMDB, TMDB, and MovieLens were used.
-See below a summary of datasets and columns used in the project.
+A blend of various data sources from IMDB,
+TMDB, and MovieLens were chosen for this project.
+<br>
+See below a summary of the raw datasets
+downloaded automatically and the columns of interest used in the project.
 
 <img src="images/datasets_raw.png">
 
-#### a) Kaggle TMDB/IMDb dataset containing content for over 1 million movies.
+#### a) Kaggle TMDB/IMDb dataset containing content for over one million movies.
 
 ---
    
@@ -163,9 +166,10 @@ It contains comprehensive data with 28 columns.
 ---
 
 Dataset has similar data as IMDB/TMDB dataset,
-but with additional interesting columns.
+but with additional interesting columns that improve the website appearance
+and content-based recommendations.
 This dataset is not kept up to date,
-therefore, it wasn’t chosen as the main source.
+therefore, it wasn’t chosen as the main movie data source.
 
 Full documentation is available in Kaggler [here'](https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m)
 
@@ -173,7 +177,7 @@ Full documentation is available in Kaggler [here'](https://www.kaggle.com/datase
 
 ---
    
-See documentation available [here](https://grouplens.org/datasets/movielens/32m/) or [here](https://files.grouplens.org/datasets/movielens/ml-32m.zip)
+See documentation available on GroupLens [here](https://grouplens.org/datasets/movielens/32m/) or [here](https://files.grouplens.org/datasets/movielens/ml-32m.zip)
 
 IMDb dataset doesn't have any ratings data by user id, 
 which we need for user-item collaborative filtering.
@@ -185,7 +189,7 @@ The zip file contains several datasets,
 of which the following are used in this project:
 
 ##### c.1) links.csv
-This dataset enables us to join data from TMDB, IMDB and MovieLens together.
+This dataset enables us to join data from TMDB, IMDB, and MovieLens together.
 In this project imdbId are used as the main unique identifier.
 
 
@@ -196,12 +200,6 @@ This dataset contains movie ratings by user and movie
 This dataset contains tags users gave to movies,
 example 'disney', 'family', etc.
 
-
-
-
-
-
-
 ## 2.2 Data Visualization
 
 As the recommendation project is user-focused,
@@ -210,11 +208,12 @@ we need to find a way to evaluate the quality of the movie recommendations.
 Let's profile a user based on the genres they like most.
 
 Drama, Comedy, and Thrillers seem to be the most popular genres.
-<br>
+<br><br>
 <img src="images/genre_ranked.png" alt="Genre Ranking Image" width="800">
 
 Here we have two users that have opposite tastes in movies 
-and should get totally different recommendations from our system.
+and should get totally different recommendations from our web app.
+<br>
 <img src="images/opposites_attract.png" width=800>
 
 
@@ -224,52 +223,185 @@ and should get totally different recommendations from our system.
 
 ## 3.1 Data Preprocessing
 
+A preprocessing pipeline `src/pipeline_preprocessing` was created,
+which runs three preprocessing scrips and unit tests in sequence:
+1) Data gathering (`src/preprocessing_data_gathering.py`)
+2) Data cleaning (`src/preprocessing_data_cleaning.py`)
+3) NLP preprocessing (`src/preprocessing_nlp`)
+4) Unit testing (`tests/test_recommender.py`)
+
+Estimated runtime 5-10 minutes depending on your local environment.
+
+#### Data gathering
+
+---
+Data sources are downloaded automatically using kaggle API or via URL.
+
+#### Data Cleaning
+
+---
+
+Data sources where cleaned and joined
+using `imdbId` as the unique movie identifier,
+via the MovieLens `links.csv` dataset. 
+See final data model created during the data cleaning preprocessing step
+and stored in `/data/clean/` as parquet files
+to preserve data types and optimized storage.
+
+<img src="images/datasets_clean.png" width=800>
+
+Main cleaning activities:
+
+- `imdb_id` was transformed into an integer as `imdbId`
+  by dropping leading characters e.g., from tt10655524 to 10655524,
+  to allow joining with MovieLens datasets
+- To manage data volume and web app performance, datasets was filtered to contain only:<br/>
+    - English movies
+    - Movies released since year 2000
+    - `imdb_id` is not null, as it's a crucial identifier to link to other datasets like the `ratings.csv` dataset
+    - Have a least 20 votes in IMDB dataset and 1 vote in TMDB dataset
+    - Have IMDB rating of at least 3
+    - Have a duration of at least 60 minutes to be seen as a movie (in my opinion)
+- Datasets contain no duplicate records with acceptable levels of missing values in text fields.<br/>
+- To support NLP content-based recommendations:
+  - all user tags were consolidated into one `all_texts` column summarized by movie
+  - tags were merged with other text columns: 'title', 'overview', 'tagline', 'genres', 'director', 'producers', 'star1', 'star2', 'star3', 'star4', 'production_companies'
+- To support collaborative filtering recommendations, ratings from MovieLens was used and linked with id `imdb_id`.<br/><br/>
+
+Summary statistics after cleaning: <br>
+- The number of unique IMDB/TMDB movies: 44,850
+- The number of unique users who rated at least 20 movies in MovieLens: 96,699
+- The number of unique movies that have at least 10 ratings in MovieLens: 11,583
+- The number of user-movie ratings in the dataset: 12,078,741
+- The number of movies that have been tagged: 14 263
+- The number of movies that have homepages: 16,462
 
 
+#### NLP preprocessing:
+
+---
+
+To overcome performance issues in the web application with data volume of 44k movies,
+10k users, and over 12 mil ratings,
+a preprocessing script creates the user-item matrix,
+tfidf vector, and model in advance.
+Artifacts are save in `\models` as parquet files where applicable.
+
+
+#### Unit testing:
+
+---
+
+Unit tests were developed
+to make sure:
+- Datasets have the correct structure and content,
+- No duplicate records
+- Correctly return the most similar user for test users 103012 and 2704 for collaborative filtering
+- Correctly return the movie with highest cosine similarity for a search for content-based filtering
+
+This gives peace of mind
+that programming changes doesn’t change the expected results.
 
 ## 3.2 Implementation
 
-- Which data sources to use?
-- Scalability: How to balance large data size vs web app performance?
-- How to handle data sparsity?
-- How to handle cold start problems for new users or 
-  users with limited viewing history?
-- How to measure success?
-
-**Summary of the project approach:**<br>
+**Summary of the recommendation algorithms used:**<br>
 <img src="images/webapp_design.png" alt="Web application design" width=1000>
+
+
+#### Handling data sparsity
+
+To handle sparsity
+when creating the user-item matrix for collaborative filtering,
+center each user's ratings around 0,
+by deducting the row average and then filling the missing values with 0.
+This means missing values are replaced with neutral scores.
+
+This is not a perfect solution as we lose interpretability,
+but if we use these values only to compare users, it's ok.
+
+Because we centered the data around 0,
+the cosine values will range from -1 to 1.
+1 means it's the most similar, -1 means its the least similar
 
 
 ## 3.3 Refinement
 
-
-
-
+- Overcome performance issues by reducing the scope of movies 
+  and creating preprocessing scripts
+  to create the necessary data and models upfront.
+  Website start-up runtime improved from 2-3 minutes to 2-3 seconds.
+  
+- IMDB dataset `cast` column contained all actors of a movie. 
+  A search term like `Julia Roberts`
+  returned movies with actresses with name `Julia`,
+  but with different surnames.
+  
+  By using an additional dataset and columns `star1, star2, star3, star4` instead,
+  which only contained the main actors, improved the recommendations.
+  
 
 # 4. Results
 
-
-
 ## 4.1 Model Evaluation and Validation
 
+### Ranked-Based Recommendations
+
+---
+
+Ranked-based recommendations correctly returned the expected top 20 movies
+described above in the metrics section.
+
+<img src="images/webapp_rank.png" alt="Web application design" width=1000>
+
+### User-Item Collaborative Filtering
+
+---
+
+##### Test 1: User 103013, who likes romance, drama and comedy movies
+
+For our test user 103013, the most similar user selected is 2704.
+If we compare the genres of the movies they rated, we get excellent similarity.
 
 <img src="images/collaborative_romance.png" width=1000>
 
+Movies recommended for user 103013 are indeed drama, comedy, or romance.
 
+<img src="images/webapp_collaborative.png" width=1000>
+
+##### Test 2: User 105189, who likes adventure, action, and fantasy movies
+
+For second test user 150189, the most similar user selected was 109980.
+Again, he genre distribution is perfectly aligned.
 
 <img src="images/collaborative_action.png" width=1000>
 
+Movies recommended for user 150189 are indeed action,
+fantasy, superhero, thrillers.
+
+<img src="images/webapp_action.png" width=1000>
+
+### Content-Based Recommendations
+
+---
+
+When using search terms like 'batman'
+or 'animal-themed superhero', similar movies in context are recommended.
+
+<img src="images/webapp_content_batman.png" width=600>
+<img src="images/webapp_content_animal.png" width=600>
 
 ## 4.2 Justification
 
+Using cosine similarity to find similar users in collaborative filtering,
+and for text similarity in content-based filtering is working well.
 
+Relevant movies are being recommended.
 
 # 5. Conclusion
 
-
-
 ## 5.1 Reflection
 
+The process used for this project can be summarized using the following steps:
 
 
 ## 5.2 Improvement
@@ -287,70 +419,6 @@ using a model like those from OpenAI or Hugging Face
 that understand contextual meaning between words and sentences
 and make better recommendations.
 
-
-# 7. Modelling
-
-
-## Data cleaning
-
-
-
-
-
-## Modelling approach
-
-Preparation notebook is stored in `notebooks/ML Pipeline Preparation.ipynb`
-XGBOOST algorythm was used, as it now supports multi-label classification out of the box.
-
-### Dealing with Imbalance
-- To deal with imbalance labels, the following techniques were used:
-  - Multi-label stratification split into test and train datasets, 
-    using package [iterative-stratification](https://pypi.org/project/iterative-stratification/)
-  - A new class `src/mloversampler.py` was developed to perform over-sampling 
-    for minority classes in MULTI-LABEL classification problems by either duplicating records or using augmentation.
-    The Level of duplication is determined by a ratio factor representing the severity of imbalance of each label.
-    Example: label 'offer' is duplicated 20 times, whilst label security is duplicated 6 times.
-  - A new custom `focal loss` function in class `src/focalloss.py` was developed
-    to reduce the importance of the majority class. 
-    This function is used as loss function in XGBOOST hyper parameter `eval_metric`.
-
-Result after stratified split and oversampling: 
-- Labels are evenly distributed in label datasets before and after stratified split.
-- Oversampling is only applied to the training dataset, number of records increased from 17,452 to 30,815 in the notebook preparation.
-<img src="disasterapp/static/assets/oversampling_results.png" alt="oversampling"/>
-
-### Cross-validation
-
-During cross-validation, GridSearchCV was used for hyperparameter tuning as it was a project requirement.
-Due to long runtimes, the grid search was restricted to `max_depth` and `n_estimators` only.
-
-As a second step,
-[OPTUNA](https://www.dailydoseofds.com/bayesian-optimization-for-hyperparameter-tuning/) 
-was used for further hyperparameter tuning, as it's much faster.
-
-Both Grid search and Random Search evaluate every hyperparameter configuration independently. 
-Thus, they iteratively explore all hyperparameter configurations to find the most optimal one.
-
-However, Bayesian Optimization takes informed steps based on the results of the previous hyperparameter configurations.
-This lets it confidently discard non-optimal configurations. 
-Consequently, the model converges to an optimal set of hyperparameters much faster.
-
-### Evaluation metrics
-
-**Precision macro** score was used as the main evaluation metrics. 
-During a disaster, there are limited resources and services, 
-and we want to send resources where we are sure it is necessary. 
-Some messages are very vague and unclear.
-It's not so easy to get a high precision macro score; it needs extensive engineering effort to get great results.
-
-### Model performance
-
-Model performance during training using **macro precision** as scoring, is increased after grid search.
-<img src="disasterapp/static/assets/model_output_results.png" alt="model_output"/>
-
-Final model performance on test data is amazing with 0.84 micro precision and 0.86 macro performance !! 
-Great performance on imbalanced labels.
-<img src="disasterapp/static/assets/final_model_performance.png" alt="model_output"/>
 
 
 
@@ -382,7 +450,7 @@ python runmovieapp.py
 
 # 8. Flask Web App
 
-User can input a message, select the genre and click on the button 'Classify Message'.
+User can input a message, select the genre, and click on the button 'Classify Message'.
 
 The saved classification model will be used to classify the message.
 All positive classes will be highlighted in green.
@@ -396,7 +464,7 @@ All positive classes will be highlighted in green.
 
 Skills applied in this project:
 
-- Web Development using Flask, Plotly and Software Engineering
+- Web Development using Flask, Plotly, and Software Engineering
 - Clean and modular code, see custom modules and classes
 - GIT version control
 - Automated unit testing using library `unittest`, see folder `tests`
