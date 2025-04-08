@@ -4,8 +4,12 @@ __pycache__
 .ipynb_checkpoints
 *.pytest_cache/
 *.db
-!/notebooks/keep datasets analysis.ipynb
 /data/raw*
 *.csv
 /models/
 .*DS_store*
+/docs
+*.pptx
+/notebooks/data
+/notebooks/models
+/notebooks/logs

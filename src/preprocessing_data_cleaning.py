@@ -487,6 +487,7 @@ def main():
                     'imdb_votes', 'poster_path', 'release_year',
                     'last_rating_timestamp', 'genres',
                     'homepage', 'backdrop_path']
+
     save_data(
         df=df_movies_clean,
         path=args.path_imdb_clean,

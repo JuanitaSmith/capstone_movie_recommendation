@@ -104,7 +104,7 @@ path_tfidf_df = os.path.join(folder_models, filename_tfidf_df)
 path_user_item_matrix = os.path.join(folder_models, filename_user_item_matrix)
 
 # Create the main project directory structure
-# os.makedirs(folder_raw, exist_ok=True)
-# os.makedirs(folder_clean, exist_ok=True)
-# os.makedirs(folder_logs, exist_ok=True)
-# os.makedirs(folder_models, exist_ok=True)
+os.makedirs(folder_raw, exist_ok=True)
+os.makedirs(folder_clean, exist_ok=True)
+os.makedirs(folder_logs, exist_ok=True)
+os.makedirs(folder_models, exist_ok=True)

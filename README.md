@@ -18,34 +18,44 @@ and building recommendation systems.
 
 My final capstone project brings together key concepts I learned in this course:
 
-- Follow the **CRISP-DM** Process (Cross Industry Process for Data Mining)
+- Follow the **CRISP-DM** Process (Cross Industry Process for Data Mining) to approach a data science project.
 - **Software Engineering**: Use object-oriented programming 
-  to build my own classes and packages and using them in a web application
+  to build my own classes and packages
+  and use them in a web application build with Bootstrap and Flask
 - **Data Engineering**: Building ETL and NLP pipelines 
   to gather, clean, and transform data
 - **Recommendations systems**:
   Building a movie recommendation webapp using ranked-based,
-  user-based collaborative filtering and NLP content-based algorithms.
+  user-item collaborative filtering and NLP content-based algorithms.
 
 ### Table of contents
 
-* [1. Project Overview](#1-project-overview)
-* [2. Udacity Project requirements](#2-udacity-project-requirements)
-* [3. Installation](#3-installation)
-* [4. Instructions](#4-instructions)
-* [5. Language translator with CHATGPT (optional step)](#5-language-translator-with-chatgpt-optional-step)
-* [6. Input File Descriptions](#6-input-file-descriptions)
-* [7. Modelling](#7-modelling)
-  * [Data cleaning](#data-cleaning)
-  * [Modelling approach](#modelling-approach)
-    * [Dealing with Imbalance](#dealing-with-imbalance)
-    * [Cross-validation](#cross-validation)
-    * [Evaluation metrics](#evaluation-metrics)
-    * [Model performance](#model-performance)
-* [8. Flask Web App](#8-flask-web-app)
-* [9. Skills learned:](#9-skills-learned)
-* [10. Licensing, Authors, Acknowledgements<a name="licensing"></a>](#10-licensing-authors-acknowledgementsa-namelicensinga)
-* [11. References](#11-references)
+* [1. Project Definition](#1-project-definition)
+  * [Project Overview](#project-overview)
+  * [Problem Statement](#problem-statement)
+  * [Metrics](#metrics)
+* [2. Analysis](#2-analysis)
+  * [2.1 Data Exploration](#21-data-exploration)
+  * [2.2 Data Visualization](#22-data-visualization)
+* [3. Methodology](#3-methodology)
+  * [3.1 Data Preprocessing](#31-data-preprocessing)
+  * [3.2 Implementation](#32-implementation)
+  * [3.3 Refinement](#33-refinement)
+* [4. Results](#4-results)
+  * [4.1 Model Evaluation and Validation](#41-model-evaluation-and-validation)
+  * [4.2 Justification](#42-justification)
+* [5. Conclusion](#5-conclusion)
+  * [5.1 Reflection](#51-reflection)
+  * [5.2 Improvement](#52-improvement)
+* [6. Project Installation](#6-installation)
+* [7. Instructions](#7-instructions)
+    * [Step 1. Set up a Kaggle API token](#step-1-set-up-a-kaggle-api-token)
+    * [Step 2: Run notebook preparations](#step-2-run-notebook-preparations)
+    * [Step 3: Run ETL pipelines](#step-3-run-etl-pipelines)
+    * [Step 4: Run the web app locally](#step-4-run-the-web-app-locally)
+* [8. Web Application Overview](#8-web-application-overview)
+* [9. Licensing, Authors, Acknowledgements<a name="licensing"></a>](#9-licensing-authors-acknowledgementsa-namelicensinga)
+* [10. References](#10-references)
 
 
 # 1. Project Definition
@@ -75,68 +85,30 @@ Recommending the right movie to the right user
 is a crucial skill to learn to ensure a positive user experience
 that helps companies like Netflix retain their customers.
 
-The project is divided into the following parts:
-
-- Part 1 — Preparation Phase:
-The CRISP-DM process is followed in two preparation notebooks
-  to help to refine the project in incremental steps.
-  
-Use notebooks to first collect, clean and explore data,
-then explore and test various movie recommendation techniques.
-
-- Part 2 — Deployment phase: Build ETL pipelines and web application
-- Build ETL and NLP pipelines for automated data wrangling
-- Transfer recommendation code from notebook to a recommender class and develop the web application
 
 ## Metrics
 
 Different metrics are used for different recommendation algorithms:
 
-#### Ranked-Based Metrics
+* For Ranked-Based recommendations, use IMDB number of votes `imdb_votes`
+to rank the top 20 movies
+to suggest to new users or users with limited rating data.
 
-  IMDB is often seen as the industry standard when it comes to movies;
-  therefore, both 'IMDB number of votes' and 'IMDB average rating'
-  were considered
-  good choices to identify the top 20 most liked movies.
+  **Expected results:** <br>
+  <img src="images/metrics_ranked_votes.png">
+
+- **Cosine Similarity** will be used as the metric
+  to find similar users in collaborative filtering and similar texts in content-based recommendations.
   
-  Upon analysis, IMDB number of votes gave the best results,
-  as it returned recognizable top movies known to me,
-  with an average IMDB rating > 7.5.
-
-**Top movies using IMDB number of votes:**
-![img.png](images/metrics_ranked_votes.png)
-
-#### User-based Collaborative Filtering Metrics
-
-Collaborative filtering focuses on neighborhood similarities,
-meaning we look for similar users to the main user
-and recommend movies the main user has not watched yet,
-but his closest neighbors have.
-
-Cosine similarity is used to find similar users. 
-
-Cosine similarity measures the similarity between users 
-based on the angle between their rating vectors, 
-focusing on directional alignment rather than magnitude, 
-making it robust to differences in scale and suitable for high-dimensional data. 
-
-#### NLP Content-Based Metrics:
-
-Another method we can use to make recommendations is
-to recommend movies with the highest text-based cosine similarity 
-to an input search term, using tfidf vectorization.
-
-Cosine similarity measures the angle between two vectors.
-The angle between similar vectors are close together.
-
-Cosine similarity focus on the direction of vectors,
-instead of magnitude,
-making it useful for comparing text
-that might have different lengths.
-
-<img src="images/cosine_similarity.png" alt="Cosine similarity" width="400">
-
-
+  Cosine similarity measures the angle between two vectors.
+  The angle between similar vectors is close together.
+  
+  Cosine similarity is a popular choice for NLP,
+  as it focus on the direction of vectors,
+  instead of magnitude, <br> making it useful for comparing text
+  that might have different lengths.
+  
+  <img src="images/cosine_similarity.png" alt="Cosine similarity" width="400">
 
 # 2. Analysis
 
@@ -192,7 +164,6 @@ of which the following are used in this project:
 This dataset enables us to join data from TMDB, IMDB, and MovieLens together.
 In this project imdbId are used as the main unique identifier.
 
-
 ##### c.2) ratings.csv
 This dataset contains movie ratings by user and movie
 
@@ -211,15 +182,14 @@ Drama, Comedy, and Thrillers seem to be the most popular genres.
 <br><br>
 <img src="images/genre_ranked.png" alt="Genre Ranking Image" width="800">
 
-Here we have two users that have opposite tastes in movies 
-and should get totally different recommendations from our web app.
+Here we have two users that have opposite tastes in movies.
+<br>
+They should get totally different recommendations from our web app.
 <br>
 <img src="images/opposites_attract.png" width=800>
 
 
 # 3. Methodology
-
-
 
 ## 3.1 Data Preprocessing
 
@@ -230,7 +200,7 @@ which runs three preprocessing scrips and unit tests in sequence:
 3) NLP preprocessing (`src/preprocessing_nlp`)
 4) Unit testing (`tests/test_recommender.py`)
 
-Estimated runtime 5-10 minutes depending on your local environment.
+Estimated runtime is 5-10 minutes depending on your local environment.
 
 #### Data gathering
 
@@ -307,7 +277,6 @@ that programming changes doesn’t change the expected results.
 **Summary of the recommendation algorithms used:**<br>
 <img src="images/webapp_design.png" alt="Web application design" width=1000>
 
-
 #### Handling data sparsity
 
 To handle sparsity
@@ -344,16 +313,16 @@ the cosine values will range from -1 to 1.
 
 ## 4.1 Model Evaluation and Validation
 
-### Ranked-Based Recommendations
+### Ranked-Based Recommendations for new users (cold start)
 
 ---
 
-Ranked-based recommendations correctly returned the expected top 20 movies
+Ranked-based recommendations are used for new users correctly returned the expected top 20 movies
 described above in the metrics section.
 
 <img src="images/webapp_rank.png" alt="Web application design" width=1000>
 
-### User-Item Collaborative Filtering
+### User-Item Collaborative Filtering for users with historical rating data
 
 ---
 
@@ -380,7 +349,7 @@ fantasy, superhero, thrillers.
 
 <img src="images/webapp_action.png" width=1000>
 
-### Content-Based Recommendations
+### Content-Based Recommendations for text-similarity searches
 
 ---
 
@@ -392,96 +361,245 @@ or 'animal-themed superhero', similar movies in context are recommended.
 
 ## 4.2 Justification
 
+### Ranked-Based Recommendations
+
+Ranked-based recommendation is a good solution
+for handing a cold start problem for users with no or little historical data.
+IMDb is often seen as the industry standard
+when it comes to movies and contains comprehensive data and IMDb ratings.
+Therefore, both IMDb number of votes and IMDb average rating
+were considered good choices to identify the top 20 most liked movies.
+
+Upon analysis, IMDB number of votes gave the best results,
+as it returned recognizable top movies known to me,
+with an average IMDB rating > 7.5.
+
+When I used IMDB average ratings,
+it returned unknown movies with high ratings,
+but with significantly fewer votes.
+
+### Collaborative Filtering
+
+Good results were obtained pretty fast,
+again due to using high-quality datasets from IMDb and MovieLens,
+which already contained quite clean data.
+
+During the cleaning step,
+only users were kept who rated at least 20 movies,
+which means we give the algorithm a good starting point to find similar users.
+
+Only movies were kept
+that received at least 10 IMDb votes with a rating of at least 3,
+making sure we give good quality recommendations.
+
 Using cosine similarity to find similar users in collaborative filtering,
 and for text similarity in content-based filtering is working well.
+As we can see above, relevant movies are returned.
 
-Relevant movies are being recommended.
+### Text-similarity context-based Filtering
+
+The success of the text search lies in using user tag data from MovieLens,
+and combing it with text data from IMDb to build a large corpus.
+The tagline and overview columns from IMDb are quite detailed,
+which makes this search successful. 
 
 # 5. Conclusion
 
 ## 5.1 Reflection
 
-The process used for this project can be summarized using the following steps:
+Using a combination of ranked-based,
+user-item collaborative filtering and context-based recommendation methods
+to build a user story and flow for the web application is working well.
 
+It was hard to find a single data source
+that contained all the necessary information,
+however, being able
+to blend several good quality data sources is a success factor to great recommendations 
+and was worth the effort.
+
+The main steps of this project are, following the CRISP-DM process:
+(Cross Industry Process for Data Mining)
+
+1) Business understanding: Design the scope and flow of the web application.
+2) Data Understanding: Explore data sources available to build the required recommendations.
+   
+First in notebooks: `/notebooks`
+3) Data Preparation: Gather, wrangle, and analyze the data to prepare it for modeling. 
+4) Data modeling: Design and refine recommendation algorithms.
+5) Evaluate the results: How well do we recommend movies to users?
+
+Transfer notebook code to packages and classes: `/src`
+6) Build pipelines to gather, clean, prepare, and test data
+7) Deployment: Build a web application using Bootstrap and Flask `/movierecommendationapp`
+
+I found steps 5 to 7 the hardest.
+Due to the nature of this project,
+it is challenging to test the results when the website is user-oriented.
+How do we understand a user, which user ids to select,
+and how do we make sure the algorithm is working and select similar users?
+I had to find test users manually, and
+build genre pie charts to validate the results.
+
+Web development and object-orientated programming is not my strongest skill;
+this took some time to master. 
 
 ## 5.2 Improvement
 
-Content-based filtering is using a bag-of-words concept
+1) Content-based filtering is using a bag-of-words concept
 that doesn’t understand contextual meaning 
 but simply matches words from the input search to the movie corpus.
 
-Feeling inspired by this
+* Feeling inspired by this
 [medium blog post](https://medium.com/data-science/recreating-andrej-karpathys-weekend-project-a-movie-search-engine-9b270d7a92e4),
 experiment with LLM
 to explore
 if building recommendations
 using a model like those from OpenAI or Hugging Face
 that understand contextual meaning between words and sentences
-and make better recommendations.
+can make better recommendations.
+   
+2) Allow users to filter on genre
+
+3) Allow users to select a movie and find similar movies using again NLP content-based search.
 
 
-
-
-# 2. Installation
+# 6. Project Installation
 To clone the repository use `git clone https://github.com/JuanitaSmith/capstone_movie_recommendation.git`
 
-- Project environment was built using Anaconda.
+- The project environment was built using Anaconda.
 - Python 3.10 interpreter was used.
 - Refer to `requirements.txt` for explicit libraries and versions needed to build your environment.
 - Refer to `environment.yaml` for the full environment setup and channels used
 - Note: Library `kaggle` and `kaggle-hub` was installed using pip as it's not available in conda
 
 
-# 4. Instructions
-Run the following commands in the project's **root directory** to set up your database and model.
+# 7. Instructions
+
+Due to data size over 1 GB, raw data is not published to GitHub.
+Raw data can be automatically downloaded to your local environment
+by setting up Kaggle API authentication and running the scripts below.
+
+Alternatively download the raw data manually as described in section `2.1 Data Exploration`
 
 A configuration file `src/config.pg` contains defaults for the project structure and file paths. 
 Ideally don’t change this structure.
 
+### `Step 1. Set up a Kaggle API token`
+
+Kaggle data is gathered automatically using kaggle API's.
+To use the Kaggle API, you need to install the kaggle package by running:
+`pip install kaggle`
+
+Before using the API, you need to authenticate using an API token.
+Follow the steps below to download the API token.
+
+1) Create a Kaggle account for free at www.kaggle.com 
+2) Go to your profile settings, click on the 'Account' tab and click on 'Create New Token'
+This will download a file named `kaggle.json`
+containing your API credentials.
+3) Move the `kaggle.json` file to the appropriate location:
+    * Linux/OSX: `~/.kaggle/kaggle.json`
+    * Windows: `c:/Users/<username>/.kaggle/kaggle.json`
+4) That's it, you’re done !
+
+IMPORTANT:
+Ensure `kaggle.json` is in the location `~/.kaggle/kaggle.json` to use the API.
+
+Alternatively, the data can be downloaded manually and stored in below structure
+
+![img.png](images/raw_data_structure.png)
+
+### `Step 2: Run notebook preparations`
+
+2.1) Run notebook `/notebooks/1_ETL_pipeline_preparation,ipynb` 
+to gather data automatically and wrangle data.
+
+2.2) Run notebook `notebooks/2_recommendation_preparation.ipynb`
+for data exploration and modeling
+
+### `Step 3: Run ETL pipelines`
 **IMPORTANT**: MAKE SURE ALL COMMANDS ARE RUN FROM THE TERMINAL IN THE MAIN PROJECT ROOT
 
-python -m src.preprocessing_data_gathering
-python -m src.preprocessing_data_cleaning
-python -m src.preprocessing_nlp
-python -m unittest tests.test_recommender
-python runmovieapp.py  
+Code from notebook 1 was transferred into several pipeline scripts.
+
+To run the entire pipeline in one easy step, run the following command: <br>
+`python -m src.pipeline_preprocessing`
+
+The scripts can also be run individually in the following order:
+
+1. `python -m src.preprocessing_data_gathering`
+2. `python -m src.preprocessing_data_cleaning`
+3. `python -m src.preprocessing_nlp`
+4. `python -m unittest tests.test_recommender` (optional step)
+
+A log file `logs\wrangling.log` will be track
+and record all steps taken during wrangling.
+
+### `Step 4: Run the web app locally`
+
+Note: Preprocessing steps in Step 3 should be completed first.
+
+Run the following command in the terminal at the main project root
+to run the web app locally.
+
+`python runmovieapp.py`
+
+Enter your web browser and type `localhost:3001` to launch the web application.
+
+A log file `logs\webapp.log` will be track all user activities on this site
+
+# 8. Web Application Overview
+
+Start by entering a user id and click 'Find Recommendations'
+To simulate a new user, enter user id = '0'.
+
+<img src="images/webapp_user0.png" alt="Web Application Overview - User 0" width=600>
+
+#### New Users
+Ranked-based recommendations will always show the same top movies.
+<br>
+Status bar indicates the type of user and recommendation technique used.
+
+<img src="images/webapp_rec_rank.png" alt="Web Application Overview - Rank" width=600>
+
+#### Collaborative filtering for users with historical ratings
+
+This approach finds similar users
+who watched the same movies as the input user <br>
+and propose movies these similar users have watched,
+that the input user has not yet seen.
+<br>
+Status bar indicates that collaborative filtering was used.
+
+<img src="images/webapp_rec_collab.png" width=600>
+
+#### Search for movies by entering some text
+
+This approach use NLP content-based recommendations.
+<br>
+The status bar indicate that content-based recommendations are used.
+
+<img src="images/webapp_rec_content.png" alt="Web Application Overview - Content" width=600>
+
+#### View 
+
+To view more details about a movie,
+click on 'View' button below the movie poster.
+
+<img src="images/webapp_view.png" alt="Web Application Overview - View" width=600>
 
 
-
-# 8. Flask Web App
-
-User can input a message, select the genre, and click on the button 'Classify Message'.
-
-The saved classification model will be used to classify the message.
-All positive classes will be highlighted in green.
-
-<img src="disasterapp/static/assets/website_output.png" alt="website_output"/>
-
-
-
-
-# 9. Skills learned:
-
-Skills applied in this project:
-
-- Web Development using Flask, Plotly, and Software Engineering
-- Clean and modular code, see custom modules and classes
-- GIT version control
-- Automated unit testing using library `unittest`, see folder `tests`
-- Logging: see folder `logging` for logging results
-- Introduction to Object-Oriented Programming - see `src/translator.py` and `mloversampler.py` for custom classes
-- Data Engineering: Building pipelines using `scikit-learn` `Pipeline`
-
-# 10. Licensing, Authors, Acknowledgements<a name="licensing"></a>
+# 9. Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
 Must give credit to Appen for the data.
 
 * Movies dataset (Licence: [CCO: Public Domain](://www.kaggle.com/datasets/jrobischon/wikipedia-movie-plots))
 * Wikipedia Movie Plots (License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
-# 11. References
+# 10. References
 
-[Kaggle movies dataset](https://www.kaggle.com/datasets/yashgupta24/48000-movies-dataset/data)
-[Wikipedia Movie PLots dataset](https://www.kaggle.com/datasets/jrobischon/wikipedia-movie-plots)
-[Building a movie recommender with OpenAI embeddings](https://medium.com/towards-data-science/recreating-andrej-karpathys-weekend-project-a-movie-search-engine-9b270d7a92e4)
-[Movie Plots from Wikipedia](https://www.kaggle.com/datasets/kartikeychauhan/movie-plots)
+- [Kaggle movies dataset](https://www.kaggle.com/datasets/yashgupta24/48000-movies-dataset/data)
+- [Wikipedia Movie PLots dataset](https://www.kaggle.com/datasets/jrobischon/wikipedia-movie-plots)
+- [Building a movie recommender with OpenAI embeddings](https://medium.com/towards-data-science/recreating-andrej-karpathys-weekend-project-a-movie-search-engine-9b270d7a92e4)
+- [Movie Plots from Wikipedia](https://www.kaggle.com/datasets/kartikeychauhan/movie-plots)
+- [Datacamp course on recommendations](https://app.datacamp.com/learn/courses/building-recommendation-engines-in-python)
